@@ -53,58 +53,76 @@ function error(err) {
 
 async function initialize(){
     let service = new google.maps.places.PlacesService(document.getElementById('places'));
+    var dict = {}
+    let places = []
+    let todoList = get_list()
+    for(let i = 0;i<todoList.length;i++){
+        let item = todoList[i]
+        if(dict[item['label']]){// if key already present push to array
+            dict[item['label']].push(item['task'])
+        } else {// else add a new array for that key
+            dict[item['label']] = [item['task']]
+        }
+        // tasks.push(todoList[i]['task'] )
+        // labels.push(todoList[i]['label'] )
+    }
+    // console.log(dict)
+
     function nearbySearch(request) {
         return new Promise(function(resolve) {
-            service.nearbySearch(request, resolve);
-        });
-    }
-    const watcher = navigator.geolocation.watchPosition(getPlaces, error, {distanceFilter:1500});
-setTimeout(() => {
-    navigator.geolocation.clearWatch(watcher);
-  }, 60000);
+            service.nearbySearch(request, resolve);// whatever the callback function of nearBySearch
+        });// will return will be the value of resolve and will be returned when the promise is successful
+    }// so resolve is actually returning the return value of callback.
 
-   async function getPlaces(position){
-    let allResponse = [];
-    var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-        for (name of ["pet_store", "pharmacy", "atm"]) {
-    var request = {
-        location: pos,
-        radius: '1500',
-        type: [name]
-      };
-      //let response = service.nearbySearch(request, callback)
-      let start = new Date()
-      console.log("req strated:"+start.getTime());
-      const res = await nearbySearch(request)
-      console.log('1111', res)
-    //   let response = service.nearbySearch(request, callback)
-    //    allResponse.push(new Promise( service.nearbySearch(request, callback)))
-    }
-    // for(let i=0;i<allResponse.length;i++){
-    //     console.log(allResponse[i])
-    // }
-    // console.log("response:" + Promise.all(allResponse))
-    //alert(allResponse))
-//    Promise.all(allResponse).then((result)=>{
-//        console.log(11111, result)
-//    })
-}
+    async function getPlaces(position){
+        let allRequests = [];
+        var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        for (const [key, value] of Object.entries(dict)) {
+            var request = {
+                location: pos,
+                radius: '1500',
+                type: [key]
+            };
+            //let response = service.nearbySearch(request, callback)
+            let start = new Date()
+            console.log("req strated:"+start.getTime());
 
-// console.log("response:" + allResponse)
+            // nearbySearch(request).then(function(value){
+            //     //console.log(value)
 
-function callback(results, status){
-    console.log()
-    if (status == google.maps.places.PlacesServiceStatus.OK) {
-        for (var i = 0; i < (results.length>3?3:results.length); i++) {
-          var place = results[i];
-          console.log("types:"+place['types'])
-          console.log(results[i]);
+                
+            // })
+            allRequests.push(nearbySearch(request))
         }
-        let end = new Date()
-        console.log("req ends:"+end.getTime())
-        return results;
-      }
+        let allResponse = await Promise.all(allRequests);
+        // Promise.all(allRequests).then(function(values){
+        //     values.forEach(function(element,index,array){
+        //         array[index] = array[index].slice(0,3)
+        //     })
+        //     console.log(values)
+        // })
+        allResponse.forEach(function(element,index,array){
+            if(array[index].length>3){
+                array[index] = array[index].slice(0,3)
+            }
+            array[index].forEach(function(element){
+                //console.log(element['name'])
+                places.push(element['name'])
+            })
+
+        })
+        for (const [key, value] of Object.entries(dict)) {
+            
+        }
+        console.log(allResponse)
+    
     }
+    
+    const watcher = navigator.geolocation.watchPosition(getPlaces, error, {distanceFilter:1500});
+    setTimeout(() => {
+        navigator.geolocation.clearWatch(watcher);
+    }, 60000);
+
 }
 
 document.getElementById('add').addEventListener('click',addTask);
@@ -113,58 +131,3 @@ window.addEventListener('load',initialize)
 
 
 console.log("Hi")
-
-
-
-
-// async function fetchSingle(pos, name){
-
-//     var request = {
-//         location: pos,
-//         radius: '1500',
-//         type: [name]
-//       };
-    
-    // let url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+posx+","+posy+"&radius=1500&type="+name+"&key=AIzaSyAf3047gIm4fZNtQ6e5_5KD-BGzqYkO8BI"
-    //console.log(url)
-    //console.log("Starting API call for "+name+" at "+ executingAt())
-    // userDetails = await fetch(url)
-    // userDetailsJSON = await userDetails.json();
-    // console.log("Finished API call for " + name + "at " + executingAt())
-    // console.log("userDetailsJSON", userDetailsJSON);
-    // return userDetailsJSON
-//     return service.nearbySearch(request, callback)
-// }
-
-// async function fetchAll(position){
-//     var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-    // var request = {
-    //     location: pos,
-    //     radius: '1500',
-    //     type: ['restaurant']
-    //   };
-
-
-
-    // let posx = position.coords.latitude
-    // let posy = position.coords.longitude
-    // console.log(posx +" "+posy)
-    // let singleUsersDetailsPromises = [];
-    // for (name of ["pet_store", "pharmacy", "atm"]) {
-    //     let promise = fetchSingle(pos, name);
-    //     //console.log("Created Promise for API call of " + name + " at " + executingAt());
-    //     singleUsersDetailsPromises.push(promise);
-    //   }
-    //console.log("Finished adding all promises at " + executingAt());
-    // let allUsersDetails = await Promise.all(singleUsersDetailsPromises);
-    //console.log("Got the results for all promises at " + executingAt());
-    // console.log(allUsersDetails)
-    // for(let i=0;i<allUsersDetails.length;i++){
-    //   console.log(allUsersDetails[i])
-    //   for(let j=0;allUsersDetails[i].length;j++){
-    //     console.log(allUsersDetails[i][j]['name'])//array of responses
-    //   }
-    // }
-    
-    
-
