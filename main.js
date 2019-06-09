@@ -63,16 +63,15 @@ async function initialize(){
         } else {// else add a new array for that key
             dict[item['label']] = [item['task']]
         }
-        // tasks.push(todoList[i]['task'] )
-        // labels.push(todoList[i]['label'] )
     }
-    // console.log(dict)
 
-    function nearbySearch(request) {
-        return new Promise(function(resolve) {
-            service.nearbySearch(request, resolve);// whatever the callback function of nearBySearch
-        });// will return will be the value of resolve and will be returned when the promise is successful
-    }// so resolve is actually returning the return value of callback.
+    function nearbySearch(request){
+        return new Promise(function(resolve){
+            service.nearbySearch(request,function(results){
+                resolve({label : request.type,response : results})
+            })
+        })
+    }
 
     async function getPlaces(position){
         let allRequests = [];
@@ -81,19 +80,11 @@ async function initialize(){
             var request = {
                 location: pos,
                 radius: '1500',
-                type: [key]
-            };
-            //let response = service.nearbySearch(request, callback)
-            let start = new Date()
-            console.log("req strated:"+start.getTime());
-
-            // nearbySearch(request).then(function(value){
-            //     //console.log(value)
-
-                
-            // })
-            allRequests.push(nearbySearch(request))
+                type: key
+            }
+        allRequests.push(nearbySearch(request))
         }
+
         let allResponse = await Promise.all(allRequests);
         // Promise.all(allRequests).then(function(values){
         //     values.forEach(function(element,index,array){
@@ -101,21 +92,23 @@ async function initialize(){
         //     })
         //     console.log(values)
         // })
+        let message = ""
         allResponse.forEach(function(element,index,array){
-            if(array[index].length>3){
-                array[index] = array[index].slice(0,3)
-            }
-            array[index].forEach(function(element){
-                //console.log(element['name'])
-                places.push(element['name'])
-            })
-
-        })
-        for (const [key, value] of Object.entries(dict)) {
             
-        }
-        console.log(allResponse)
-    
+            if(element['response'].length>3){
+                element['response'] = element['response'].slice(0,3)
+            }
+
+            element['response'].forEach(function(innerElement,index2,array2){
+                
+                array2[index2] = innerElement['name']
+                
+            })
+            element['label'] = dict[element['label']]
+            //console.log("For "+ element['label']+" you can go to "+element['response'])
+            message += "For "+ element['label']+" you can go to "+element['response']+"\n"
+        })
+        alert(message)
     }
     
     const watcher = navigator.geolocation.watchPosition(getPlaces, error, {distanceFilter:1500});
@@ -128,6 +121,4 @@ async function initialize(){
 document.getElementById('add').addEventListener('click',addTask);
 showList();
 window.addEventListener('load',initialize)
-
-
 console.log("Hi")
