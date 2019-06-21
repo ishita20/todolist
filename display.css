@@ -1,0 +1,144 @@
+body {
+    font-family: 'Roboto', sans-serif;
+      background: #36D1DC;
+      /* fallback for old browsers */
+      background: -webkit-linear-gradient(to right, #5B86E5, #36D1DC);
+      /* Chrome 10-25, Safari 5.1-6 */
+      background: linear-gradient(to right, #5B86E5, #36D1DC);
+      /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    }
+  
+  #contain {
+      width: 360px;
+      margin: 100px auto;
+      background: #f7f7f7;
+      box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+      justify-content: center;
+  
+    }
+  .container{
+      
+  }
+  
+  .box_row{
+      display: flex;
+      flex-flow: column;
+      padding:5px;
+      
+  }
+  
+  
+  .box_row > div {
+      margin:5px; 
+      flex:1 1 auto;
+  }
+  .add_item_heading{
+  
+  }
+  .todo_heading{
+    
+  }
+  .list{
+      display: grid;
+      margin-top:-70px;
+      /* grid-template-columns: 180px 130px 100px; */
+      grid-column: 1/4;
+      grid-auto-rows: 50px;
+  }
+  .unordered_list{
+      align-items: center;
+      box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22);
+      width: 360px;
+      margin: 100px auto;
+      background: #f7f7f7;
+      box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  li {
+      overflow: hidden;
+      padding: 20px 0;
+      border-bottom: 1px solid #eee;
+    }
+  
+  .flex-container{
+      padding: 0;
+      margin: 0;
+      list-style: none;
+      
+      display: -webkit-box;
+      display: -moz-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      flex-direction: column;
+  }
+  
+  .child_container{
+  
+  }
+  
+  
+  /* Style the list items */
+  ul li {
+      cursor: pointer;
+      position: relative;
+      padding: 12px 8px 12px 40px;
+      background: #eee;
+      font-size: 18px;
+      transition: 0.2s;
+    
+      /* make the list items unselectable */
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+    
+    /* Set all odd list items to a different color (zebra-stripes) */
+    ul li:nth-child(odd) {
+      background: #f9f9f9;
+    }
+    
+    /* Darker background-color on hover */
+    ul li:hover {
+      background: #ddd;
+    }
+    
+    /* When clicked on, add a background color and strike out text */
+    ul li.checked {
+      background: #888;
+      color: #fff;
+      text-decoration: line-through;
+    }
+    
+    /* Add a "checked" mark when clicked on */
+    ul li.checked::before {
+      content: '';
+      position: absolute;
+      border-color: #fff;
+      border-style: solid;
+      border-width: 0 2px 2px 0;
+      top: 10px;
+      left: 16px;
+      transform: rotate(45deg);
+      height: 15px;
+      width: 7px;
+    }
+    
+    form {
+      display: inline-block;
+      margin-bottom: 10px;
+  }
+  .form-group {
+      text-align: center;
+      padding-bottom: 25px;
+  }
+  #todo {
+      margin: 0 auto;
+      width: 500px;
+  }
+  
+  .label_types {
+        margin-bottom: 10px;
+        width: 200px;
+  }

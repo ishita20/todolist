@@ -5,19 +5,37 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>TODO List</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- <link rel="stylesheet" type="text/css" media="screen" href="display.css"> -->
+    <link rel="stylesheet" type="text/css" media="screen" href="display.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
-    <input id="addTask">
-    <select id="label">
-        <option value="department_store">Grocery store</option>
-        <option value="pharmacy">Chemist</option>
-        <option value="atm">Atm</option>
-      </select>
-    <button id="add">Add</button>
-    <div id="list"></div>
+    <div class="container">
+        <div class="child_container">
+          <div class="box_row mb-2">
+              <div class="form-group">
+                  <h1>To-Do <small>List</small></h1>
+                <form id = "fom2" role="form">
+                    <input type="text" id="addTask" class="form-control" 
+                    placeholder="Your Task" name="task" required> 
+                </form>
+                <div >
+                  <select class="label_types" id="label">
+                      <option value="atm">Atm</option>
+                      <option value="bank">Bank</option>
+                      <option value="department_store">Department Store</option>
+                      <option value="pet_store">Pet Store</option>
+                      <option value="pharmacy">Pharmacy</option>
+                      <option value="post_office">Post Office</option>
+                      <option value="supermarket">Supermarket</option>
+                  </select>
+              </div> 
+                <button type="button" id="add" class="btn btn btn-primary">Add</button>
+                    </div>                                  
+          </div>
+      </div>
+    <div class="list"></div>
     <script type="text/javascript" src="main.js"></script>
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=<Google_API_key>&libraries=places"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfiDgH__3rEtq5jziBKD2Vn7Zfk3qhrJU&libraries=places"></script>
     <div id="places"></div> 
 </body>
 </html>

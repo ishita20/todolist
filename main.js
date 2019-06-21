@@ -10,12 +10,13 @@ function get_list(){
 
 function showList(){
     let list = get_list();
-    let disp = '<ul>';
+    let disp = '<div class="unordered_list"><ul>';
     for(let i=0;i<list.length;i++){
-        disp+='<li>'+list[i]['task']+" "+list[i]['label_text']+'<button class="remove" id="'+i+'">Delete</button></li>';
+        disp+='<li><div>'+list[i]['task']+'</div><div>'+list[i]['label_text']+'</div><div><button class="remove" id="'+i+'">Delete</button></div></li>';
     }
-    disp+='</ul>';
-    document.getElementById('list').innerHTML=disp;
+    disp+='</ul></div>';
+    // document.getElementById('list').innerHTML=disp;
+    document.getElementsByClassName('list')[0].innerHTML=disp;
     let buttons = document.getElementsByClassName('remove');
     for(let i=0;i<buttons.length;i++){
         buttons[i].addEventListener('click',remove);
@@ -68,7 +69,6 @@ async function initialize(){
         count++
 
         var dict = {}
-        let places = []
         let todoList = get_list()
         for(let i = 0;i<todoList.length;i++){
             let item = todoList[i]
